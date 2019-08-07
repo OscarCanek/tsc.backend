@@ -86,15 +86,47 @@ namespace tsc.backend.lib.Countries
             };
         }
 
-        public async Task<CountryModel[]> ListAsync(GetCountryDetails model)
+        public async Task<Tuple<CountryModel[], int>> ListAsync(GetCountryDetails model)
         {
 
             Guard.Argument(model, nameof(model))
                 .NotNull()
                 .Member(x => x.Top, x => Guard.InRange(x, 0, 100));
 
-            return await this.tscContext.Countries
-                .Take(model.Top)
+            var countries = this.tscContext.Countries;
+
+            IQueryable<Country> query = null;
+
+            if (!string.IsNullOrEmpty(model.Name) || !string.IsNullOrEmpty(model.Alfa2))
+            {
+                if (!string.IsNullOrEmpty(model.Name))
+                {
+                    query = countries.Where(x => x.CommonName.Contains(model.Name) || x.IsoName.Contains(model.Name));
+                }
+
+                if (!string.IsNullOrEmpty(model.Alfa2))
+                {
+                    if (query != null)
+                    {
+                        query = query.Where(x => x.Alfa2.Contains(model.Alfa2));
+                    }
+                    else
+                    {
+                        query = countries.Where(x => x.Alfa2.Contains(model.Alfa2));
+                    }
+                }
+
+                if (query != null)
+                {
+                    query = query.Take(model.Top);
+                }
+            }
+            else
+            {
+                query = countries.Take(model.Top);
+            }
+
+            var result = await query
                 .Select(x => new CountryModel
                 {
                     Id = x.Id,
@@ -106,6 +138,8 @@ namespace tsc.backend.lib.Countries
                     PhonePrefix = x.PhonePrefix
                 })
                 .ToArrayAsync();
+
+            return Tuple.Create(result, result.Length);
         }
 
         public async Task<Guid> RemoveAsync(RemoveCountryModel model)

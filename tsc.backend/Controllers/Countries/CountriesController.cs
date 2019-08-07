@@ -27,11 +27,16 @@ namespace tsc.backend.Controllers.Countries
 
         // GET api/countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> Get([FromQuery] int top)
+        public async Task<ActionResult<Tuple<IEnumerable<CountryModel>, int>>> Get([FromQuery] int top, [FromQuery] string name, [FromQuery] string alfa2)
         {
             try
             {
-                return Ok(await this.handler.ListAsync(new GetCountryDetails { Top = top }));
+                var result = await this.handler.ListAsync(new GetCountryDetails { Top = top, Name = name, Alfa2 = alfa2 });
+                return Ok(new
+                {
+                    countries = result.Item1,
+                    total = result.Item2
+                });
             }
             catch (Exception)
             {
@@ -42,7 +47,7 @@ namespace tsc.backend.Controllers.Countries
 
         // GET api/countries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> Get([FromRoute] Guid id)
+        public async Task<ActionResult<CountryModel>> Get([FromRoute] Guid id)
         {
             try
             {

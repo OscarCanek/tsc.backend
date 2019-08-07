@@ -9,7 +9,7 @@ namespace tsc.backend.lib
         where TUpdate : class
         where TRemove : class
     {
-        Task<TResult[]> ListAsync(TList userId);
+        Task<Tuple<TResult[], int>> ListAsync(TList userId);
 
         Task<TResult> GetDetailsAsync(TList model);
 
