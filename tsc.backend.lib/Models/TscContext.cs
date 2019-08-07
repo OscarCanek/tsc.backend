@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace tsc.backend.Models
+namespace tsc.backend.lib.Models
 {
     public class TscContext : DbContext
     {
@@ -55,7 +55,7 @@ namespace tsc.backend.Models
 
                 entity.Property(e => e.CountryCode)
                     .IsRequired()
-                    .HasColumnName("numeric_iso");
+                    .HasColumnName("country_code");
 
                 entity.Property(e => e.Alfa2)
                     .IsRequired()

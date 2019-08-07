@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using tsc.backend.Models;
+using tsc.backend.lib.Countries;
+using tsc.backend.lib.Models;
 
 namespace tsc.backend.Controllers.Countries
 {
@@ -15,43 +16,93 @@ namespace tsc.backend.Controllers.Countries
     {
         private readonly ILogger<CountriesController> logger;
         private readonly TscContext tscContext;
+        private readonly ICountryHandler handler;
 
-        public CountriesController(TscContext tscContext, ILogger<CountriesController> logger)
+        public CountriesController(ICountryHandler handler, TscContext tscContext, ILogger<CountriesController> logger)
         {
+            this.handler = handler;
             this.logger = logger;
             this.tscContext = tscContext;
         }
 
         // GET api/countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> Get()
+        public async Task<ActionResult<IEnumerable<string>>> Get([FromQuery] int top)
         {
-            return await this.tscContext.Countries.Select(x => x.CommonName).ToArrayAsync();
+            try
+            {
+                return Ok(await this.handler.ListAsync(new GetCountryDetails { Top = top }));
+            }
+            catch (Exception)
+            {
+                // here we should capture the custom exception to return the correct response
+                throw;
+            }
         }
 
         // GET api/countries/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ActionResult<string>> Get([FromRoute] Guid id)
         {
-            return "value";
+            try
+            {
+                return Ok(await this.handler.GetDetailsAsync(new GetCountryDetails { Id = id }));
+            }
+            catch (Exception)
+            {
+                // here we should capture the custom exception to return the correct response
+                throw;
+            }
         }
 
         // POST api/countries
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<CountryModel>> Post([FromBody] CreateCountryModel model)
         {
+            try
+            {
+                return Ok(await this.handler.CreateAsync(model));
+            }
+            catch (Exception)
+            {
+                // here we should capture the custom exception to return the correct response
+                throw;
+            }
         }
 
         // PUT api/countries/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult<CountryModel>> Put(Guid id, [FromBody] UpdateCountryModel model)
         {
+            try
+            {
+                if (id != model.Id)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(await this.handler.UpdateAsync(model));
+            }
+            catch (Exception)
+            {
+                // here we should capture the custom exception to return the correct response
+                throw;
+            }
         }
 
         // DELETE api/countries/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<Guid>> Delete(Guid id)
         {
+            try
+            {
+                return Ok(await this.handler.RemoveAsync(new RemoveCountryModel { Id = id }));
+            }
+            catch (Exception)
+            {
+                // here we should capture the custom exception to return the correct response
+                throw;
+            }
         }
     }
 }

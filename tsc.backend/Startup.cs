@@ -11,7 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using tsc.backend.Models;
+using tsc.backend.lib.Countries;
+using tsc.backend.lib.Models;
 
 namespace tsc.backend
 {
@@ -43,6 +44,13 @@ namespace tsc.backend
                 options.UseSqlServer(Configuration.GetConnectionString("tsc"))
                 );
 
+
+            services.AddScoped<ICountryHandler, CountryHandler>(x =>
+            {
+                var tscContext = x.GetService<TscContext>() as TscContext;
+                return new CountryHandler(tscContext);
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -51,7 +59,7 @@ namespace tsc.backend
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {
