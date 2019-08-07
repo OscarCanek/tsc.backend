@@ -30,7 +30,7 @@ namespace tsc.backend.Controllers.Subdivisions
                 var result = await this.handler.ListAsync(new GetSubdivisionDetails { Top = top, CountryId = countryId });
                 return Ok(new
                 {
-                    countries = result.Item1,
+                    subdivisions = result.Item1,
                     total = result.Item2
                 });
             }

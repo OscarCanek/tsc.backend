@@ -29,3 +29,7 @@ The two services can be found at:
 - api/subdivisions
 
 Examples of how to consume those API's can be found at the `TSC.postman_collection.json` file.
+
+## Extras
+
+You can find the Swagger page at `https://localhost:5001/swagger/index.html`
