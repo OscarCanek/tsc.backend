@@ -21,7 +21,9 @@ namespace tsc.backend.lib.Countries
             Guard.Argument(model, nameof(model))
                 .NotNull()
                 .Member(x => x.IsoName, x => x.NotEmpty())
-                .Member(x => x.CommonName, x => x.NotEmpty());
+                .Member(x => x.CommonName, x => x.NotEmpty())
+                .Member(x => x.Alfa3, x => x.Length(3))
+                .Member(x => x.Alfa2, x => x.Length(2));
 
             model.IsoName = model.IsoName.Trim();
             model.CommonName = model.CommonName.Trim();
@@ -100,18 +102,18 @@ namespace tsc.backend.lib.Countries
             {
                 if (!string.IsNullOrEmpty(model.Name))
                 {
-                    query = countries.Where(x => x.CommonName.Contains(model.Name) || x.IsoName.Contains(model.Name));
+                    query = countries.Where(x => x.CommonName.Contains(model.Name, StringComparison.InvariantCultureIgnoreCase) || x.IsoName.Contains(model.Name, StringComparison.InvariantCultureIgnoreCase));
                 }
 
                 if (!string.IsNullOrEmpty(model.Alfa2))
                 {
                     if (query != null)
                     {
-                        query = query.Where(x => x.Alfa2.Contains(model.Alfa2));
+                        query = query.Where(x => x.Alfa2.Contains(model.Alfa2, StringComparison.InvariantCultureIgnoreCase));
                     }
                     else
                     {
-                        query = countries.Where(x => x.Alfa2.Contains(model.Alfa2));
+                        query = countries.Where(x => x.Alfa2.Contains(model.Alfa2, StringComparison.InvariantCultureIgnoreCase));
                     }
                 }
 
@@ -166,7 +168,9 @@ namespace tsc.backend.lib.Countries
             Guard.Argument(model, nameof(model))
                 .NotNull()
                 .Member(x => x.IsoName, x => x.NotEmpty())
-                .Member(x => x.CommonName, x => x.NotEmpty());
+                .Member(x => x.CommonName, x => x.NotEmpty())
+                .Member(x => x.Alfa3, x => x.Length(3))
+                .Member(x => x.Alfa2, x => x.Length(2));
 
             model.IsoName = model.IsoName.Trim();
             model.CommonName = model.CommonName.Trim();

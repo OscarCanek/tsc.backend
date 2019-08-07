@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tsc.backend", "tsc.backend\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tsc.backend.lib", "tsc.backend.lib\tsc.backend.lib.csproj", "{66C46AAA-AD0E-49A1-B5BE-C40EACA58328}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tsc.backend.tests", "tsc.backend.tests\tsc.backend.tests.csproj", "{B68606B0-CE76-447F-815A-D6102C81478D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{66C46AAA-AD0E-49A1-B5BE-C40EACA58328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66C46AAA-AD0E-49A1-B5BE-C40EACA58328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66C46AAA-AD0E-49A1-B5BE-C40EACA58328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68606B0-CE76-447F-815A-D6102C81478D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68606B0-CE76-447F-815A-D6102C81478D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68606B0-CE76-447F-815A-D6102C81478D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68606B0-CE76-447F-815A-D6102C81478D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

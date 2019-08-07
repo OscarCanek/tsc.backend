@@ -33,3 +33,4 @@ Examples of how to consume those API's can be found at the `TSC.postman_collecti
 ## Extras
 
 You can find the Swagger page at `https://localhost:5001/swagger/index.html`
+The proyect has one unit test made with xUnit called `TestListCountriesAsync`
