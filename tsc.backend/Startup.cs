@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using tsc.backend.lib.Countries;
 using tsc.backend.lib.Models;
+using tsc.backend.lib.Subdivisions;
 
 namespace tsc.backend
 {
@@ -44,11 +45,18 @@ namespace tsc.backend
                 options.UseSqlServer(Configuration.GetConnectionString("tsc"))
                 );
 
-
+            // configures the country handler
             services.AddScoped<ICountryHandler, CountryHandler>(x =>
             {
                 var tscContext = x.GetService<TscContext>() as TscContext;
                 return new CountryHandler(tscContext);
+            });
+
+            // configures the subdivision handler
+            services.AddScoped<ISubdivisionHandler, SubdivisionHandler>(x =>
+            {
+                var tscContext = x.GetService<TscContext>() as TscContext;
+                return new SubdivisionHandler(tscContext);
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

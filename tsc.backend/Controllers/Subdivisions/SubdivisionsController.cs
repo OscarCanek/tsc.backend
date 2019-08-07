@@ -3,31 +3,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using tsc.backend.lib.Countries;
+using tsc.backend.lib.Subdivisions;
 using tsc.backend.lib.Models;
 
-namespace tsc.backend.Controllers.Countries
+namespace tsc.backend.Controllers.Subdivisions
 {
-    [Route("api/countries")]
+    [Route("api/subdivisions")]
     [ApiController]
-    public class CountriesController : ControllerBase
+    public class SubdivisionsController : ControllerBase
     {
-        private readonly ILogger<CountriesController> logger;
-        private readonly ICountryHandler handler;
+        private readonly ILogger<SubdivisionsController> logger;
+        private readonly ISubdivisionHandler handler;
 
-        public CountriesController(ICountryHandler handler, TscContext tscContext, ILogger<CountriesController> logger)
+        public SubdivisionsController(ISubdivisionHandler handler, ILogger<SubdivisionsController> logger)
         {
             this.handler = handler;
             this.logger = logger;
         }
 
-        // GET api/countries
+        // GET api/subdivisions
         [HttpGet]
-        public async Task<ActionResult<Tuple<IEnumerable<CountryModel>, int>>> Get([FromQuery] int top, [FromQuery] string name, [FromQuery] string alfa2)
+        public async Task<ActionResult<Tuple<IEnumerable<SubdivisionModel>, int>>> Get([FromQuery] int top, [FromQuery] Guid countryId)
         {
             try
             {
-                var result = await this.handler.ListAsync(new GetCountryDetails { Top = top, Name = name, Alfa2 = alfa2 });
+                var result = await this.handler.ListAsync(new GetSubdivisionDetails { Top = top, CountryId = countryId });
                 return Ok(new
                 {
                     countries = result.Item1,
@@ -41,13 +41,13 @@ namespace tsc.backend.Controllers.Countries
             }
         }
 
-        // GET api/countries/5
+        // GET api/subdivisions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CountryModel>> Get([FromRoute] Guid id)
+        public async Task<ActionResult<SubdivisionModel>> Get([FromRoute] Guid id, [FromQuery] Guid countryId)
         {
             try
             {
-                return Ok(await this.handler.GetDetailsAsync(new GetCountryDetails { Id = id }));
+                return Ok(await this.handler.GetDetailsAsync(new GetSubdivisionDetails { Id = id, CountryId = countryId }));
             }
             catch (Exception)
             {
@@ -56,9 +56,9 @@ namespace tsc.backend.Controllers.Countries
             }
         }
 
-        // POST api/countries
+        // POST api/subdivisions
         [HttpPost]
-        public async Task<ActionResult<CountryModel>> Post([FromBody] CreateCountryModel model)
+        public async Task<ActionResult<SubdivisionModel>> Post([FromBody] CreateSubdivisionModel model)
         {
             try
             {
@@ -71,9 +71,9 @@ namespace tsc.backend.Controllers.Countries
             }
         }
 
-        // PUT api/countries/5
+        // PUT api/subdivisions/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<CountryModel>> Put(Guid id, [FromBody] UpdateCountryModel model)
+        public async Task<ActionResult<SubdivisionModel>> Put(Guid id, [FromBody] UpdateSubdivisionModel model)
         {
             try
             {
@@ -91,13 +91,13 @@ namespace tsc.backend.Controllers.Countries
             }
         }
 
-        // DELETE api/countries/5
+        // DELETE api/subdivisions/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Guid>> Delete(Guid id)
         {
             try
             {
-                return Ok(await this.handler.RemoveAsync(new RemoveCountryModel { Id = id }));
+                return Ok(await this.handler.RemoveAsync(new RemoveSubdivisionModel { Id = id }));
             }
             catch (Exception)
             {

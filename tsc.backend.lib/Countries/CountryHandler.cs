@@ -88,7 +88,6 @@ namespace tsc.backend.lib.Countries
 
         public async Task<Tuple<CountryModel[], int>> ListAsync(GetCountryDetails model)
         {
-
             Guard.Argument(model, nameof(model))
                 .NotNull()
                 .Member(x => x.Top, x => Guard.InRange(x, 0, 100));

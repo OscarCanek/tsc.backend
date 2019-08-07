@@ -86,12 +86,15 @@ namespace tsc.backend.lib.Models
             {
                 entity.HasKey(e => e.Id);
 
-                entity.ToTable("subdivisions");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("(newsequentialid())");
 
+                entity.ToTable("subdivisions");
 
                 entity.HasOne(d => d.CountryNav)
                     .WithMany(p => p.Subdivisions)
-                    .HasForeignKey(d => d.Id)
+                    .HasForeignKey(d => d.CountryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_countries_to_subdivisions_id");
 
