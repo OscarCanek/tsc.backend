@@ -150,11 +150,17 @@ namespace tsc.backend.lib.Countries
                 .Member(x => x.Id, x => x.NotEqual(Guid.Empty));
 
             var country = await this.tscContext.Countries
+                .Include(x => x.Subdivisions)
                 .FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (country == null)
             {
                 return model.Id;
+            }
+
+            if (country.Subdivisions.Count > 0)
+            {
+                throw new Exception("Can't remove the country, it has subdivisions.");
             }
 
             this.tscContext.Remove(country);
