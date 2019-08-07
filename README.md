@@ -33,4 +33,4 @@ Examples of how to consume those API's can be found at the `TSC.postman_collecti
 ## Extras
 
 You can find the Swagger page at `https://localhost:5001/swagger/index.html`
-The proyect has one unit test made with xUnit called `TestListCountriesAsync`
+The project has one unit test made with xUnit called `TestListCountriesAsync`. It will need a SQL Server Database where the connection string need to be set at the `CreateOptions` method of the class `SqlServerContextFactory` located at `tsc.backend.tests/DBContexts/SqlServerContextFactory.cs` file.
