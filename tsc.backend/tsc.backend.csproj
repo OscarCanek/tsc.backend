@@ -21,6 +21,7 @@
   <ItemGroup>
     <Folder Include="Controllers\Countries\" />
     <Folder Include="Controllers\Subdivisions\" />
+    <Folder Include="Controllers\Ping\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\EmptyClass.cs" />
